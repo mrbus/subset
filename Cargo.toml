@@ -1,0 +1,10 @@
+[package]
+name = "subset"
+version = "0.1.0"
+authors = ["Bulat Shaimardanov"]
+edition = "2018"
+keywords = ["Subset", "Vector"]
+categories = ["Data structures", "Rust patterns"]
+license = "MIT"
+
+[dependencies]
