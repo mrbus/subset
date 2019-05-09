@@ -3,6 +3,7 @@ name = "subset"
 version = "0.1.0"
 authors = ["Bulat Shaimardanov"]
 edition = "2018"
+description = "A very simple subset of vector's items that is able to iterate forward and backward over selected items."
 keywords = ["Subset", "Vector"]
 categories = ["Data structures", "Rust patterns"]
 license = "MIT"
