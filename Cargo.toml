@@ -1,6 +1,6 @@
 [package]
 name = "subset"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Bulat Shaimardanov"]
 edition = "2018"
 description = "A very simple subset of vector's items that is able to iterate forward and backward over selected items."
