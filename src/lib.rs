@@ -2,7 +2,7 @@
 // TODO: bitvec
 use std::collections::HashSet;
 
-/// A very simple subset of vector's items that is able to iterate forward and backward over selected items.
+/// A very simple subset of slice's items that is able to iterate forward and backward over selected items.
 /// 
 /// # Examples
 ///
@@ -11,7 +11,7 @@ use std::collections::HashSet;
 /// ```
 /// use subset::*;
 /// 
-/// let set = vec![9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+/// let set = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 /// let idxs = vec![2, 2];
 /// assert_eq!(Subset::new(&set, &idxs).err(), Some(IndexError::NotUnique));
 /// let idxs = vec![10];
@@ -27,8 +27,8 @@ use std::collections::HashSet;
 /// assert_eq!(None, iter.next_back());
 /// ```
 pub struct Subset<'a, T> {
-    set: &'a Vec<T>,
-    idxs: &'a Vec<usize>
+    set: &'a [T],
+    idxs: &'a [usize]
 }
 
 
@@ -49,23 +49,18 @@ pub enum IndexError {
 impl<'a, T> Subset<'a, T> {
     /// Creates a subset from the whole set and indexes of the selected items.
     /// Both the uniqueness of the selected items and the array bounds is checked.
-    pub fn new(set: &'a Vec<T>, idxs: &'a Vec<usize>) -> Result<Self, IndexError> {
+    pub fn new(set: &'a [T], idxs: &'a [usize]) -> Result<Self, IndexError> {
         let set_size = set.len();
         let uniques: HashSet<usize> = idxs.iter().map(|v| *v).collect();
         if uniques.len() < idxs.len() {
             Err(IndexError::NotUnique)
         } else if idxs.iter().any(|v| *v >= set_size) {
             Err(IndexError::OutOfBounds)
-        } else {
-            Ok(Self {
-                set: set,
-                idxs: idxs
-            })
-        }
+        } else { Ok(unsafe{Self::new_unchecked(set, idxs)}) }
     }
     /// Creates a subset from the whole set and indexes of the selected items.
     /// Neither the uniqueness of the selected items, nor the array bounds is checked.
-    pub unsafe fn new_unchecked(set: &'a Vec<T>, idxs: &'a Vec<usize>) -> Self {
+    pub unsafe fn new_unchecked(set: &'a [T], idxs: &'a [usize]) -> Self {
         Self {
             set: set,
             idxs: idxs
