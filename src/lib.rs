@@ -66,6 +66,12 @@ impl<'a, T> Subset<'a, T> {
             idxs: idxs
         }
     }
+    pub fn set(&self) -> &[T] {
+        self.set
+    }
+    pub fn idxs(&self) -> &[usize] {
+        self.idxs
+    }
     /// Returns an iterator over subset.
     pub fn iter(&'a self) -> SubsetIterator<'a, T> {
         SubsetIterator {
