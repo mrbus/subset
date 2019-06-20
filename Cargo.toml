@@ -1,6 +1,6 @@
 [package]
 name = "subset"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Bulat Shaimardanov"]
 edition = "2018"
 description = "A very simple subset of slice's items that is able to iterate forward and backward over selected items."
