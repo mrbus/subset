@@ -72,7 +72,6 @@ impl<'a, T> Subset<'a, T> {
     /// # Panics
     /// Panics if `std::mem::size_of::<T>() == 0`
     pub fn new(set: &'a [T], idxs: &'a [usize]) -> Result<Self, SubsetError> {
-        // TODO переделать под into()
         multi::Subset::new(set, idxs)?.try_into()
     }
     /// Constructs a subset from the whole set and indexes of the selected items.
@@ -304,5 +303,8 @@ mod tests {
             sum += e;
         }
         assert_eq!(sum, 108);
+        let result_into: crate::multi::SubsetMut<_> = subset.into();
+        assert!(result_into.is_unique());
+        assert_eq!(result_into.iter().fold(0, |accum, v| accum + *v), 54);
     }
 }

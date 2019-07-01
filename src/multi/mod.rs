@@ -95,7 +95,6 @@ impl<'a, T> Subset<'a, T> {
     /// # Panics
     /// Panics if `std::mem::size_of::<T>() == 0`
     pub fn new(set: &'a [T], idxs: &'a [usize]) -> Result<Self, SubsetError> {
-        // TODO переделать под into()
         assert_ne!(std::mem::size_of::<T>(), 0);
         let set_size = set.len();
         if idxs.iter().any(|v| *v >= set_size) {
@@ -334,6 +333,9 @@ mod tests {
         assert_eq!(Subset::new(&set, &idxs).err(), Some(SubsetError::OutOfBounds));
         let idxs = vec![2, 2];
         let subset = Subset::new(&set, &idxs).unwrap();
+        let result_into: Result<crate::unique::Subset<_>, _> = subset.try_into();
+        assert_eq!(result_into.err(), Some(SubsetError::NotUnique));
+        let subset = Subset::new(&set, &idxs).unwrap();
         assert_eq!(subset.iter().fold(0, |accum, v| accum + *v), 14);
         let idxs = vec![2, 4, 7];
         let subset = Subset::new(&set, &idxs).unwrap();
@@ -348,6 +350,8 @@ mod tests {
             sum += e;
         }
         assert_eq!(sum, 28);
+        let result_into: Result<crate::unique::Subset<_>, _> = subset.try_into();
+        assert!(result_into.is_ok());
     }
 
     #[test]
